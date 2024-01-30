@@ -15,12 +15,12 @@ const transporter = nodemailer.createTransport({
 transporter.verify().then(console.log).catch(console.error);
 
 export const sendContactForm = (req, res) => {
-    sendToRequester(req.body);
+    sendToRequester(req.body, res);
     sendToCustomerService(req.body);
     res.status(200).json({ success: `Email was send with the information on the contact form. You will receive a update on your email ${req.body.email}`}).send()
 }
 
-const sendToRequester =  async (payloadForm) => {
+const sendToRequester =  async (payloadForm, res) => {
     await transporter.sendMail({
         from: 'Inetum - Realdolmen', 
         to: payloadForm.email,
@@ -78,6 +78,10 @@ const sendToRequester =  async (payloadForm) => {
             </div>
         </body>
         </html>`
+    }, (error) => {
+        if(error) {
+            res.status(error.status).send(error.message);
+        }
     })
 }
 
@@ -126,5 +130,9 @@ const sendToCustomerService = async (payloadForm) => {
         </body>
         </html>
         `
+    }, (error) => {
+        if(error) {
+            res.status(error.status).send(error.message);
+        }
     })
 }
