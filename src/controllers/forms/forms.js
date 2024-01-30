@@ -85,7 +85,7 @@ const sendToRequester =  async (payloadForm, res) => {
     })
 }
 
-const sendToCustomerService = async (payloadForm) => {
+const sendToCustomerService = async (payloadForm, res) => {
     let value, tr = '';
     for (value in payloadForm) {
         tr += '<tr><td>' + value + '</td><td>' + payloadForm[value] + '<td></tr>';
